@@ -67,7 +67,8 @@ class Extractor:
                     revision_text = revision.text or ""
                     project_labels = set(pl for pl in
                                          self.extract_labels(revision_text))
-                except:
+                except:  # noqa: E722
+                    # Naughty indiscriminate exception catching.
                     logger.warning("Could not extract labels from text:")
                     logger.warning(traceback.format_exc())
                     continue
