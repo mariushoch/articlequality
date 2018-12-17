@@ -1,5 +1,5 @@
 mwapi
-mwbase >= 0.0.6, < 0.0.999
+mwbase >= 0.0.6, < 0.1.999
 mwreverts
 mwtypes
 mwxml >= 0.3.3

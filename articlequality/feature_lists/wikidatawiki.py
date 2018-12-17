@@ -147,6 +147,26 @@ dead = wikibase_.revision.has_property(
     properties.DATE_OF_DEATH, name='revision.dead')
 is_blp = has_birthday.and_(not_(dead))
 
+def proc_item_completeness():
+    properties_present= {}
+    properties_present = set(properties_present.keys())
+    properties_suggested = {}
+
+    all_prob = 0.0
+    present_prob = 0.0
+    for statement in properties_suggested:
+        all_prob += float(statement['rating'])
+        if statement['id'] in properties_present:
+            present_prob += float(statement['rating'])
+
+    return present_prob/all_prob if all_prob else 0.0
+
+item_completeness = Datasource(
+    name + 'item_completeness',
+    proc_item_completeness,
+    depends_on=[revision_oriented.Suggested],# wikibase_.revision.datasources.Suggested.properties],
+)
+
 local_wiki = [
     is_human,
     is_blp,
@@ -160,7 +180,8 @@ local_wiki = [
     external_sources_count,
     external_sources_count / modifiers.max(source_claims_count, 1),
     unique_sources_count,
-    unique_sources_count / modifiers.max(source_claims_count, 1)
+    unique_sources_count / modifiers.max(source_claims_count, 1),
+    item_completeness
 ]
 
 item_quality = wikibase.item + local_wiki
